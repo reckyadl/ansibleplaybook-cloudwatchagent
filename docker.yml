@@ -1,0 +1,6 @@
+---
+- hosts: [server-adl]
+  become: true
+  tasks:
+          - name: Cek aplikasi docker
+            shell: sudo docker ps -a

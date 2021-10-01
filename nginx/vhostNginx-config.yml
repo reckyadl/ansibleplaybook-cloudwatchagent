@@ -1,0 +1,61 @@
+- hosts: [BSP-app-prod-fe]
+  become: true
+  tasks:
+    - name: Create directory sites-available
+      file:
+        path: /etc/nginx/sites-available
+        owner: root
+        group: root
+        mode: 0755
+        state: directory
+
+    - name: Create directory sites-enabled
+      file:
+        path: /etc/nginx/sites-enabled
+        owner: root
+        group: root
+        mode: 0755
+        state: directory
+
+    - name: Create directory root for FE
+      file:
+        path: /opt/nginx/fe
+        owner: root
+        group: root
+        mode: 0755
+        state: directory
+
+    - name: Copy nginx.conf
+      copy:
+        src: nginx.conf
+        dest: /etc/nginx/nginx.conf
+        owner: root
+        group: root
+        mode: 0644
+        
+    - name: Copy BSP-app-prod-fe
+      copy:
+        src: bsp-app-prod-fe.conf
+        dest: /etc/nginx/sites-available/bsp-app-prod-fe.conf
+        owner: root
+        group: root
+        mode: 0644
+        
+    - name: Copy index.html
+      copy:
+        src: index.html
+        dest: /opt/nginx/fe/index.html
+        owner: root
+        group: root
+        mode: 0644    
+
+    - name: enable site
+      file:
+        src: /etc/nginx/sites-available/bsp-app-prod-fe.conf  
+        dest: /etc/nginx/sites-enabled/bsp-app-prod-fe.conf
+        state: link
+
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted

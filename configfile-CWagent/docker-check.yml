@@ -1,0 +1,7 @@
+---
+- hosts: [server-adl]
+  become: true
+  tasks:
+    - name: Check if services exist
+      stat: path=/etc/init.d/docker.service
+      register: service_status

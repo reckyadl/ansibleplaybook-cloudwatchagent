@@ -1,0 +1,14 @@
+---
+- hosts: bsp-wa-1a
+  become: true
+  tasks:
+          - name: Update repo
+            yum:
+              update_cache: yes
+              update_only: yes
+              state: present
+
+          - name: Install wget
+            yum:
+              name: wget
+              state: latest
